@@ -7,13 +7,13 @@
 For production stage:
 
 ```bash
-yarn production
+npm run production
 ```
 
 For development stage:
 
 ```bash
-yarn build
+npm run build
 ```
 
 ### How to use
