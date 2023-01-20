@@ -1,11 +1,13 @@
 const path = require('path')
-const miniCssExtractPlugin = require('mini-css-extract-plugin')
+const miniCss = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: './src/js/main.js',
-    plugins: [new miniCssExtractPlugin()],
+    entry: {
+        index: './src/js/main.js',
+        custom: './src/js/custom.js'
+    },
     output: {
-        filename: 'main.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
     devServer: {
@@ -14,32 +16,18 @@ module.exports = {
         hot: true
     },
     module: {
-        rules: [
-            {
-                test: /\.(scss)$/,
-                use: [
-                    {
-                        // Extracts CSS for each JS file that includes CSS
-                        loader: miniCssExtractPlugin.loader
-                    },
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: () => [
-                                    require('autoprefixer')
-                                ]
-                            }
-                        }
-                    },
-                    {
-                        loader: 'sass-loader'
-                    }
-                ]
-            }
-        ]
-    }
+        rules: [{
+            test:/\.(s*)css$/,
+            use: [
+                miniCss.loader,
+                'css-loader',
+                'sass-loader',
+            ]
+        }]
+    },
+    plugins: [
+        new miniCss({
+            filename: '[name].css'
+        }),
+    ]
 }
